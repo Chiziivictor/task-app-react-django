@@ -4,13 +4,31 @@ import Details from "./Details";
 import TodoList from "./TodoList";
 import styled from "styled-components";
 import AddTodo from "./AddTodo";
+import { MdAddCircle } from "react-icons/md";
 
 const Container = styled.div`
+  background-color: white;
+  width: 90vw;
+  height: 95vh;
+  border-radius: 5px;
+  position: relative;
+  /* overflow-y: scroll; */
+`;
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
   /* justify-content: center; */
+`;
+const AddContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
+`;
+const AddButton = styled.button`
+  border: none;
+  background: none;
 `;
 
 const Todo = () => {
@@ -112,20 +130,27 @@ const Todo = () => {
 
   return (
     <Container>
-      <AddTodo onAdd={handleAdd} />
-      <Header />
-      {todo.length > 0
-        ? todo.map((todo) => (
-            <TodoList
-              item={todo}
-              key={todo.id}
-              onSelect={handleDetails}
-              onDelete={handleDelete}
-              onComplete={handleComplete}
-            />
-          ))
-        : "No Tasks To Show"}
-      <Details details={details} />
+      <Wrapper>
+        {/* <AddTodo onAdd={handleAdd} /> */}
+        <Header />
+        {todo.length > 0
+          ? todo.map((todo) => (
+              <TodoList
+                item={todo}
+                key={todo.id}
+                onSelect={handleDetails}
+                onDelete={handleDelete}
+                onComplete={handleComplete}
+              />
+            ))
+          : "No Tasks To Show"}
+        {/* <Details details={details} /> */}
+        <AddContainer>
+          <AddButton>
+            <MdAddCircle style={{ fontSize: "50px", color: "#16325c" }} />
+          </AddButton>
+        </AddContainer>
+      </Wrapper>
     </Container>
   );
 };

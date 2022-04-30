@@ -1,42 +1,50 @@
 import styled from "styled-components";
+import image from "../assets/Bgimg.png";
 
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  background: linear-gradient(rgba(10, 11, 29, 0.5), rgba(121, 121, 121, 0.5));
+  background: linear-gradient(rgba(121, 121, 121, 0.4), rgba(0, 0, 0, 0.9)),
+    url(${image});
   background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 const Wrapper = styled.div`
-  padding: 20px;
-  width: clamp(250px, 50vw, 350px);
+  border-radius: 5px;
+  padding: 30px;
+  width: clamp(200px, 50vw, 300px);
   background-color: white;
 `;
 const Form = styled.form`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 `;
 const Title = styled.h1`
   font-size: 24px;
-  font-weight: 300;
+  font-weight: 500;
+  text-align: center;
 `;
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
-  margin: 20px 10px 0 0;
+  margin: 20px 0 0;
   padding: 10px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid gray;
 `;
-const Agreement = styled.span`
+const Message = styled.span`
   font-size: 12px;
   margin: 20px 0;
 `;
 const Button = styled.button`
-  width: 40%;
   border: none;
+  border-radius: 5px;
   padding: 15px 20px;
-  background-color: teal;
+  margin-top: 10vh;
+  background-color: #16325c;
   color: white;
   cursor: pointer;
 `;
@@ -45,17 +53,13 @@ const Register = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
+        <Title>SIGN UP</Title>
         <Form>
-          <Input placeholder="full name" />
           <Input placeholder="username" />
           <Input placeholder="email" />
           <Input placeholder="password" />
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Button>CREATE</Button>
+          {/* <Message>Use a password you can easily remember</Message> */}
+          <Button>SIGN UP</Button>
         </Form>
       </Wrapper>
     </Container>

@@ -15,16 +15,22 @@
       "completed": true
     },
     {
-      "title": "Fix Details Card Functionality",
-      "date": "Today",
-      "completed": true,
-      "id": 4
-    },
-    {
       "title": "Omg this shit works",
       "date": "Na today oh",
       "completed": true,
       "id": 5
+    },
+    {
+      "title": "Design Task App",
+      "date": "ASAP",
+      "completed": false,
+      "id": 6
+    },
+    {
+      "title": "Test Task Func",
+      "date": "Today",
+      "completed": true,
+      "id": 7
     }
   ]
 }
