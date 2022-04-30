@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 
 const Container = styled.div`
   width: 90%;
@@ -16,20 +17,30 @@ const ListItem = styled.div`
 const Title = styled.p``;
 const DateContainer = styled.div`
   float: right;
+  display: flex;
+  gap: 30px;
 `;
+const Button = styled.button``;
 
-const TodoList = ({ item, onSelect }) => {
+const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
   return (
     <Container>
       <ListItem>
-        {item.completed ? (
-          <CheckCircleOutlinedIcon />
-        ) : (
-          <CircleOutlinedIcon onClick={() => (item.completed = false)} />
-        )}
+        <Button onClick={() => onComplete(item.id)}>
+          {item.completed ? (
+            <CheckCircleOutlinedIcon />
+          ) : (
+            <CircleOutlinedIcon />
+          )}
+        </Button>
         <Title onClick={() => onSelect(item.id)}>{item.title}</Title>
       </ListItem>
-      <DateContainer>{item.date}</DateContainer>
+      <DateContainer>
+        <Title>{item.date}</Title>
+        <Button onClick={() => onDelete(item.id)}>
+          <HighlightOffOutlinedIcon />
+        </Button>
+      </DateContainer>
     </Container>
   );
 };

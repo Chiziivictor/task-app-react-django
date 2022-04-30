@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+// import { data } from "../data";
 
 const Container = styled.div`
   width: 70%;
@@ -8,15 +9,12 @@ const Container = styled.div`
 const Title = styled.h2``;
 const Description = styled.p``;
 
-const Details = ({ details, id }) => {
-  const detail = details;
-  console.log(id);
-
+const Details = ({ details }) => {
   return (
     <Container>
-      <Title>{detail.title}</Title>
-      <Description>{detail.desc}</Description>
-      {detail.completed ? <p>Completed</p> : <p>Not Completed</p>}
+      <Title>{details.title}</Title>
+      <Description>{details.desc}</Description>
+      {details.completed ? <p>Completed</p> : <p>Not Completed</p>}
     </Container>
   );
 };
