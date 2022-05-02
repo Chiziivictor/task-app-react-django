@@ -1,5 +1,7 @@
+import { useState } from "react";
 import styled from "styled-components";
 import image from "../assets/Bgimg.png";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Container = styled.div`
   width: 100%;
@@ -20,6 +22,7 @@ const Wrapper = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 const Title = styled.h1`
   font-size: 24px;
@@ -61,15 +64,43 @@ const Link = styled.a`
   text-decoration: underline;
   cursor: pointer;
 `;
+const PasswordContainer = styled.div`
+  min-width: 30%;
+  position: relative;
+`;
+const showStyle = {
+  position: "absolute",
+  top: "75px",
+  right: "5%",
+};
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {};
+
   return (
     <Container>
       <Wrapper>
         {/* <Title>SIGN IN</Title> */}
         <Form>
-          <Input placeholder="username" />
-          <Input placeholder="password" />
+          <Input
+            placeholder="username"
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="password"
+            type={showPassword ? "text" : "password"}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {showPassword ? (
+            <IoMdEyeOff style={showStyle} onClick={handleShowPassword} />
+          ) : (
+            <IoMdEye style={showStyle} onClick={handleShowPassword} />
+          )}
           <Button>LOGIN</Button>
           <SignUp>
             <Message>Don't have an account?</Message>

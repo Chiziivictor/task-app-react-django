@@ -12,7 +12,6 @@ const fadeIn = keyframes`
   }
 `;
 const Container = styled.div`
-  width: 90%;
   height: 50px;
   padding: 0 5% 0 5%;
   display: flex;

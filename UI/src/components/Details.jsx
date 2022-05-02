@@ -3,8 +3,8 @@ import styled from "styled-components";
 // import { data } from "../data";
 
 const Container = styled.div`
+  padding: 10px 40px;
   margin-top: 5%;
-  width: 100%;
 `;
 const Title = styled.h1`
   color: #16325c;

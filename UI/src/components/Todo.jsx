@@ -8,6 +8,7 @@ import { MdAddCircle } from "react-icons/md";
 
 const Container = styled.div`
   background-color: white;
+  /* width: clamp(250px, 90vw, 1350px); */
   width: 90vw;
   height: 95vh;
   border-radius: 5px;
@@ -26,17 +27,16 @@ const ListContainer = styled.div`
   width: 90vw;
   height: 83vh;
   @media (min-width: 55rem) {
-    width: 70%;
+    width: 60vw;
   }
 `;
 const DetContainer = styled.div`
   display: none;
-  padding: 10px 50px;
   /* box-shadow: -5px 1px 10px -10px; */
 
   @media (min-width: 55rem) {
     border-left: 1px solid rgba(0, 0, 0, 0.1);
-    width: 30%;
+    width: 30vw;
     display: block;
   }
 `;
@@ -60,6 +60,7 @@ const AddButton = styled.button`
   transform: translateX(-50%);
   border: none;
   background: none;
+  cursor: pointer;
 
   @media (min-width: 55rem) {
     left: 28%;
