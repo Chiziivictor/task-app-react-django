@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import styled, { keyframes } from "styled-components";
 import { BsCheckSquare, BsSquare } from "react-icons/bs";
-import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import { MdInfoOutline, MdOutlineDelete } from "react-icons/md";
 
+const fadeIn = keyframes`
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+`;
 const Container = styled.div`
-  width: 87%;
+  width: 90%;
   height: 50px;
-  padding: 0 10% 0 3%;
+  padding: 0 5% 0 5%;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  @media (min-width: 55rem) {
+    /* width: 58%; */
+  }
 `;
 const ListItem = styled.div`
   display: flex;
@@ -20,22 +31,39 @@ const ListItem = styled.div`
 const Title = styled.p`
   font-size: 12px;
 `;
+const Date = styled.p`
+  font-size: 12px;
+  animation: ${fadeIn} 0.3s ease-in;
+`;
 const DateContainer = styled.div`
-  float: right;
   display: flex;
-  gap: 30px;
+  align-items: center;
+  margin-right: 16px;
 `;
 const Button = styled.button`
   background: none;
   border: none;
+  cursor: pointer;
 `;
-const completedStyle = {
-  opacity: "0.6",
-};
+const DetailsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  animation: ${fadeIn} 0.3s ease-in;
+`;
 
 const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
+  const [hover, setHover] = useState(false);
+
+  const handleHover = () => {
+    setHover(true);
+  };
+
+  const handleOut = () => {
+    setHover(false);
+  };
+
   return (
-    <Container>
+    <Container onMouseOver={handleHover} onMouseOut={handleOut}>
       <ListItem>
         <Button onClick={() => onComplete(item.id)}>
           {item.completed ? (
@@ -50,19 +78,25 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
             <BsSquare style={{ fontSize: "18px" }} />
           )}
         </Button>
-        <Title
-          onClick={() => onSelect(item.id)}
-          style={{ opacity: item.completed && "0.5" }}
-        >
-          {item.title}
-        </Title>
+        <Title style={{ opacity: item.completed && "0.5" }}>{item.title}</Title>
       </ListItem>
-      <DateContainer>
-        <Title style={{ opacity: "0.6" }}>{item.date}</Title>
-        {/* <Button onClick={() => onDelete(item.id)}>
-          <HighlightOffOutlinedIcon />
-        </Button> */}
-      </DateContainer>
+      {!hover && (
+        <DateContainer>
+          <Date style={{ opacity: "0.6" }}>{item.date}</Date>
+        </DateContainer>
+      )}
+      {hover && (
+        <DetailsContainer>
+          <Button onClick={() => onSelect(item.id)}>
+            <MdInfoOutline style={{ fontSize: "18px", marginRight: "2px" }} />
+          </Button>
+          <Button onClick={() => onDelete(item.id)}>
+            <MdOutlineDelete
+              style={{ fontSize: "18px", color: "hsl(0, 100%, 30%)" }}
+            />
+          </Button>
+        </DetailsContainer>
+      )}
     </Container>
   );
 };

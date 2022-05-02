@@ -22,19 +22,60 @@ const Wrapper = styled.div`
   width: 100%;
   /* justify-content: center; */
 `;
+const ListContainer = styled.div`
+  width: 90vw;
+  height: 83vh;
+  @media (min-width: 55rem) {
+    width: 70%;
+  }
+`;
+const DetContainer = styled.div`
+  display: none;
+  padding: 10px 50px;
+  /* box-shadow: -5px 1px 10px -10px; */
+
+  @media (min-width: 55rem) {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    width: 30%;
+    display: block;
+  }
+`;
+const Body = styled.div`
+  min-height: 83vh;
+  @media (min-width: 55rem) {
+    display: flex;
+  }
+`;
 const AddContainer = styled.div`
-  position: absolute;
-  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 const AddButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   border: none;
   background: none;
+
+  @media (min-width: 55rem) {
+    left: 28%;
+    transform: translateX(-28%);
+  }
+`;
+const Title = styled.p`
+  font-size: 12px;
 `;
 
 const Todo = () => {
   const [todo, setTodo] = useState([]);
   const [id, setId] = useState(0);
   const [details, setDetails] = useState([]);
+
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -72,6 +113,7 @@ const Todo = () => {
 
     const data = await res.json();
     setTodo([...todo, data]);
+    setShowAdd(false);
 
     // const id = Math.floor(Math.random() * 10000) + 1;
     // const newTodo = { id, ...item };
@@ -131,25 +173,40 @@ const Todo = () => {
   return (
     <Container>
       <Wrapper>
-        {/* <AddTodo onAdd={handleAdd} /> */}
         <Header />
-        {todo.length > 0
-          ? todo.map((todo) => (
-              <TodoList
-                item={todo}
-                key={todo.id}
-                onSelect={handleDetails}
-                onDelete={handleDelete}
-                onComplete={handleComplete}
+        <Body>
+          <ListContainer>
+            {showAdd && (
+              <AddContainer>
+                <AddTodo onAdd={handleAdd} />
+              </AddContainer>
+            )}
+            {todo.length > 0 ? (
+              todo.map((todo) => (
+                <TodoList
+                  item={todo}
+                  key={todo.id}
+                  onSelect={handleDetails}
+                  onDelete={handleDelete}
+                  onComplete={handleComplete}
+                />
+              ))
+            ) : (
+              <Title>No Tasks to show</Title>
+            )}
+            <AddButton>
+              <MdAddCircle
+                onClick={() => {
+                  setShowAdd(!showAdd);
+                }}
+                style={{ fontSize: "50px", color: "#16325c" }}
               />
-            ))
-          : "No Tasks To Show"}
-        {/* <Details details={details} /> */}
-        <AddContainer>
-          <AddButton>
-            <MdAddCircle style={{ fontSize: "50px", color: "#16325c" }} />
-          </AddButton>
-        </AddContainer>
+            </AddButton>
+          </ListContainer>
+          <DetContainer>
+            <Details details={details} />
+          </DetContainer>
+        </Body>
       </Wrapper>
     </Container>
   );
