@@ -50,12 +50,17 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.user.value);
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>SIGN UP</Title>
-        <Form>
-          <Input placeholder="username" />
+        <Form onSubmit={handleSubmit}>
+          <Input placeholder="username" type="text" name="user" />
           <Input placeholder="email" />
           <Input placeholder="password" />
           {/* <Message>Use a password you can easily remember</Message> */}

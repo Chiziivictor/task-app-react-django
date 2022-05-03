@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../context/AuthContext";
 import styled from "styled-components";
 import image from "../assets/Bgimg.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import Todo from "./Todo";
 
 const Container = styled.div`
   width: 100%;
@@ -72,6 +74,8 @@ const showStyle = {
   position: "absolute",
   top: "75px",
   right: "5%",
+  cursor: "pointer",
+  color: "white",
 };
 
 const Login = () => {
@@ -79,29 +83,44 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowPassword = () => {};
+  let { loginUser, user, authTokens } = useContext(AuthContext);
+  console.log(user);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (e) => {
+    loginUser(e);
+  };
 
   return (
     <Container>
       <Wrapper>
-        {/* <Title>SIGN IN</Title> */}
-        <Form>
+        <Title>SIGN IN {user && user.username}</Title>
+        <Form onSubmit={handleSubmit}>
           <Input
+            name="username"
             placeholder="username"
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
+            // onChange={(e) => setUsername(e.target.value)}
+            // value={username}
+            // required
           />
           <Input
+            name="password"
             placeholder="password"
             type={showPassword ? "text" : "password"}
-            onChange={(e) => setPassword(e.target.value)}
+            // onChange={(e) => setPassword(e.target.value)}
+            // value={password}
+            // required
           />
           {showPassword ? (
             <IoMdEyeOff style={showStyle} onClick={handleShowPassword} />
           ) : (
             <IoMdEye style={showStyle} onClick={handleShowPassword} />
           )}
-          <Button>LOGIN</Button>
+          <Button type="submit">LOGIN</Button>
           <SignUp>
             <Message>Don't have an account?</Message>
             <Link>Sign up</Link>

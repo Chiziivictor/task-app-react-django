@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import Details from "./Details";
-import TodoList from "./TodoList";
+import React, { useContext, useEffect, useState } from "react";
+import Header from "../components/Header";
+import Details from "../components/Details";
+import TodoList from "../components/TodoList";
 import styled from "styled-components";
-import AddTodo from "./AddTodo";
+import AddTodo from "../components/AddTodo";
 import { MdAddCircle } from "react-icons/md";
+import AuthContext from "../context/AuthContext";
 
 const Container = styled.div`
   background-color: white;
@@ -75,26 +76,38 @@ const Todo = () => {
   const [todo, setTodo] = useState([]);
   const [id, setId] = useState(0);
   const [details, setDetails] = useState([]);
+  const [getAuthTokens, setGetAuthTokens] = useState(null);
 
   const [showAdd, setShowAdd] = useState(false);
 
+  const url = "http://localhost:8000/api/list";
+  const { authTokens } = useContext(AuthContext);
+  console.log(authTokens);
+
   useEffect(() => {
     const getData = async () => {
-      const serverData = await fetchData();
-      setTodo(serverData);
-      setDetails(serverData[0]);
+      setGetAuthTokens(authTokens);
+      // const serverData = await fetchData();
+      // setTodo(serverData);
+      // setDetails(serverData[0]);
     };
     getData();
-  }, []);
+  }, [getAuthTokens]);
 
   const fetchData = async () => {
-    const res = await fetch("http://localhost:5000/data");
+    const res = await fetch("http://localhost:8000/api/list/", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
+      },
+    });
     const data = await res.json();
     return data;
   };
 
   const fetchDataItem = async (id) => {
-    const res = await fetch(`http://localhost:5000/data/${id}`);
+    const res = await fetch(`http://localhost:8000/data/${id}`);
     const data = await res.json();
 
     console.log(data);
@@ -104,7 +117,7 @@ const Todo = () => {
   const handleAdd = async (item) => {
     console.log("Added Task");
 
-    const res = await fetch("http://localhost:5000/data", {
+    const res = await fetch("http://localhost:8000/data", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -171,10 +184,12 @@ const Todo = () => {
     );
   };
 
+  let { name } = useContext(AuthContext);
+
   return (
     <Container>
       <Wrapper>
-        <Header />
+        <Header name={name} />
         <Body>
           <ListContainer>
             {showAdd && (

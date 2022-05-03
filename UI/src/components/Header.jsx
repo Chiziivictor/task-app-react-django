@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import AuthContext from "../context/AuthContext";
 
 const Container = styled.div`
   width: 100%;
@@ -19,13 +20,22 @@ const Line = styled.div`
   height: 20px;
   margin-right: 10px;
 `;
+const Span = styled.span`
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 10px;
+  font-style: italic;
+  margin-left: 40%;
+`;
 
-const Header = () => {
+const Header = ({ name }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <Container>
       <Title>
         <Line />
         My Tasks
+        <Span>logged in as {user}</Span>
       </Title>
     </Container>
   );

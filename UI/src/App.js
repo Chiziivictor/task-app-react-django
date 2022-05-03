@@ -1,8 +1,11 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import styled from "styled-components";
-import Todo from "./components/Todo";
+import Todo from "./pages/Todo";
 import AddTodo from "./components/AddTodo";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const Container = styled.div`
   height: 100vh;
@@ -18,7 +21,15 @@ const Container = styled.div`
 function App() {
   return (
     <Container>
-      <Login />
+      {/* <Register /> */}
+      <Router>
+        <Routes>
+          <Route element={<Login />} path="/" exact />
+          <Route element={<Todo />} path="/dashboard" />
+          {/* <Route element={<PrivateRoute />} path="/" exact>
+          </Route> */}
+        </Routes>
+      </Router>
     </Container>
   );
 }
