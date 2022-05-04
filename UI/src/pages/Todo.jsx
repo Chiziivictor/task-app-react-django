@@ -80,22 +80,22 @@ const Todo = () => {
 
   const [showAdd, setShowAdd] = useState(false);
 
-  const url = "http://localhost:8000/api/list";
+  const url = "http://localhost:8000/api/";
   const { authTokens } = useContext(AuthContext);
-  console.log(authTokens);
-
+  
   useEffect(() => {
     const getData = async () => {
       setGetAuthTokens(authTokens);
-      // const serverData = await fetchData();
-      // setTodo(serverData);
-      // setDetails(serverData[0]);
+      const serverData = await fetchData();
+      setTodo(serverData);
+      console.log(todo);
+      console.log(details);
     };
     getData();
-  }, [getAuthTokens]);
+  }, []);
 
   const fetchData = async () => {
-    const res = await fetch("http://localhost:8000/api/list/", {
+    const res = await fetch(url + "list/", {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -107,7 +107,12 @@ const Todo = () => {
   };
 
   const fetchDataItem = async (id) => {
-    const res = await fetch(`http://localhost:8000/data/${id}`);
+    const res = await fetch(url + `detail/${id}/`, {
+      headers:{
+        "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
+      }
+    });
     const data = await res.json();
 
     console.log(data);
@@ -117,10 +122,11 @@ const Todo = () => {
   const handleAdd = async (item) => {
     console.log("Added Task");
 
-    const res = await fetch("http://localhost:8000/data", {
+    const res = await fetch(url + "create/", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
       },
       body: JSON.stringify(item),
     });
@@ -155,8 +161,16 @@ const Todo = () => {
 
   const handleDelete = async (id) => {
     console.log("deleted", id);
-    await fetch(`http://localhost:5000/data/${id}`, {
-      method: "DELETE",
+    const index = todo.findIndex((t, i)=>{
+      return t.id === id
+    })
+    console.log(index);
+        await fetch(`http://localhost:8000/api/delete/${id}/`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
+      },
     });
     setTodo(todo.filter((todo) => todo.id !== id));
     console.log(todo);
@@ -167,10 +181,11 @@ const Todo = () => {
     const todoToggle = await fetchDataItem(id);
     const updatedTodo = { ...todoToggle, completed: !todoToggle.completed };
 
-    const res = await fetch(`http://localhost:5000/data/${id}`, {
-      method: "PUT",
-      headers: {
+    const res = await fetch(url + `update/${id}/`, {
+      method: "POST",
+      headers:{
         "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
       },
       body: JSON.stringify(updatedTodo),
     });
@@ -189,7 +204,7 @@ const Todo = () => {
   return (
     <Container>
       <Wrapper>
-        <Header name={name} />
+        <Header />
         <Body>
           <ListContainer>
             {showAdd && (
@@ -208,7 +223,7 @@ const Todo = () => {
                 />
               ))
             ) : (
-              <Title>No Tasks to show</Title>
+              <Title style={{marginRight: "12px"}}>No Tasks to show</Title>
             )}
             <AddButton>
               <MdAddCircle

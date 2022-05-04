@@ -23,11 +23,12 @@ function App() {
     <Container>
       {/* <Register /> */}
       <Router>
+
         <Routes>
-          <Route element={<Login />} path="/" exact />
+          <Route element={<Login />} path="/" />
+          <Route element={<PrivateRoute />} >
           <Route element={<Todo />} path="/dashboard" />
-          {/* <Route element={<PrivateRoute />} path="/" exact>
-          </Route> */}
+          </Route>
         </Routes>
       </Router>
     </Container>

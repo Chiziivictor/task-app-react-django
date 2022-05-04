@@ -5,10 +5,10 @@ import Login from "../pages/Login";
 import Todo from "../pages/Todo";
 
 const PrivateRoute = ({ ...children }) => {
-  const { user } = useContext(AuthContext);
+  const { authTokens } = useContext(AuthContext);
   const authed = false;
 
-  return authed ? <Todo /> : <Navigate to="/" />;
+  return authTokens ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;

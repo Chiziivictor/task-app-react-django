@@ -22,10 +22,11 @@ const Description = styled.p`
   font-size: 14px;
 `;
 
-const Details = ({ details }) => {
+const Details = ({ details}) => {
+  
   return (
-    <Container>
-      <Title>{details.title}</Title>
+ <Container>
+      {details === null ? <Title>Select an item to show details</Title> : (<><Title>{details.title}</Title>
       <Wrapper style={{ margin: "35px 0" }}>
         <Heading>Description</Heading>
         <Description>{details.desc}</Description>
@@ -37,9 +38,10 @@ const Details = ({ details }) => {
         ) : (
           <Description>Not Completed</Description>
         )}
-      </Wrapper>
-    </Container>
-  );
+      </Wrapper></>)}
+    </Container> 
+)
 };
 
 export default Details;
+

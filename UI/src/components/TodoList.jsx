@@ -61,6 +61,12 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
     setHover(false);
   };
 
+  let created = new window.Date(item.created)
+  console.log(created.getDay());
+
+  // let date = new window.Date((item.created).getFullYear())
+  // console.log(date);
+
   return (
     <Container onMouseOver={handleHover} onMouseOut={handleOut}>
       <ListItem>
@@ -81,7 +87,7 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
       </ListItem>
       {!hover && (
         <DateContainer>
-          <Date style={{ opacity: "0.6" }}>{item.date}</Date>
+          <Date style={{ opacity: "0.6" }}>{item.created}</Date>
         </DateContainer>
       )}
       {hover && (

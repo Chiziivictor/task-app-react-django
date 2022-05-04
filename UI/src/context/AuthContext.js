@@ -7,7 +7,9 @@ const AuthContext = createContext({});
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  const [authTokens, setAuthTokens] = useState(null);
+ 
+  const [authTokens, setAuthTokens] = useState(localStorage.getItem("authTokens") ? JSON.parse(localStorage.getItem("authTokens")) : null);
+  // const [authTokens, setAuthTokens] = useState(null)
   const [user, setUser] = useState(null);
 
   const loginUser = async (e) => {
@@ -36,7 +38,6 @@ export const AuthProvider = ({ children }) => {
 
   let contextData = {
     authTokens: authTokens,
-    user: user,
     loginUser: loginUser,
   };
 

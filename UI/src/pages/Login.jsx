@@ -83,8 +83,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  let { loginUser, user, authTokens } = useContext(AuthContext);
-  console.log(user);
+  let { loginUser, authTokens } = useContext(AuthContext);
+  console.log(authTokens);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -97,7 +97,7 @@ const Login = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>SIGN IN {user && user.username}</Title>
+        <Title>SIGN IN </Title>
         <Form onSubmit={handleSubmit}>
           <Input
             name="username"

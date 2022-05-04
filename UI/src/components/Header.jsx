@@ -27,7 +27,7 @@ const Span = styled.span`
   margin-left: 40%;
 `;
 
-const Header = ({ name }) => {
+const Header = () => {
   const { user } = useContext(AuthContext);
 
   return (
@@ -35,7 +35,6 @@ const Header = ({ name }) => {
       <Title>
         <Line />
         My Tasks
-        <Span>logged in as {user}</Span>
       </Title>
     </Container>
   );
