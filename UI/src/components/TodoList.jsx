@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { BsCheckSquare, BsSquare } from "react-icons/bs";
 import { MdInfoOutline, MdOutlineDelete } from "react-icons/md";
@@ -43,6 +43,11 @@ const Button = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(120%);
+  }
 `;
 const DetailsContainer = styled.div`
   display: flex;
@@ -61,11 +66,15 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
     setHover(false);
   };
 
-  let created = new window.Date(item.created)
-  console.log(created.getDay());
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  // let date = new window.Date((item.created).getFullYear())
-  // console.log(date);
+  let d = new window.Date();
+  let today = d.getDay();
+
+  let createdDate = new window.Date(item.date);
+  let dayIndex = createdDate.getDay();
+  let date = createdDate.getDate();
+  let day = days[dayIndex];
 
   return (
     <Container onMouseOver={handleHover} onMouseOut={handleOut}>
@@ -87,7 +96,10 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
       </ListItem>
       {!hover && (
         <DateContainer>
-          <Date style={{ opacity: "0.6" }}>{item.created}</Date>
+          <Date style={{ opacity: "0.6" }}>
+            {dayIndex == today ? "Today" : day + " " + date}
+            {/* {day} */}
+          </Date>
         </DateContainer>
       )}
       {hover && (

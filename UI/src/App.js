@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import styled from "styled-components";
 import Todo from "./pages/Todo";
-import AddTodo from "./components/AddTodo";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./utils/PrivateRoute";
@@ -23,11 +22,11 @@ function App() {
     <Container>
       {/* <Register /> */}
       <Router>
-
         <Routes>
-          <Route element={<Login />} path="/" />
-          <Route element={<PrivateRoute />} >
-          <Route element={<Todo />} path="/dashboard" />
+          <Route element={<Login />} path="/login" />
+          <Route element={<Register />} path="/register" />
+          <Route element={<PrivateRoute />}>
+            <Route element={<Todo />} path="/" />
           </Route>
         </Routes>
       </Router>

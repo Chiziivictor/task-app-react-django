@@ -3,7 +3,7 @@ import AuthContext from "../context/AuthContext";
 import styled from "styled-components";
 import image from "../assets/Bgimg.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import Todo from "./Todo";
+import { useNavigate, useLocation } from "react-router";
 
 const Container = styled.div`
   width: 100%;
@@ -82,6 +82,8 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   let { loginUser, authTokens } = useContext(AuthContext);
   console.log(authTokens);
@@ -90,8 +92,12 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
-    loginUser(e);
+  const handleSubmit = async (e) => {
+    await loginUser(e);
+
+    if (location.state?.from) {
+      navigate(location.state.from);
+    }
   };
 
   return (
@@ -103,17 +109,17 @@ const Login = () => {
             name="username"
             placeholder="username"
             type="text"
-            // onChange={(e) => setUsername(e.target.value)}
-            // value={username}
-            // required
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            required
           />
           <Input
             name="password"
             placeholder="password"
             type={showPassword ? "text" : "password"}
-            // onChange={(e) => setPassword(e.target.value)}
-            // value={password}
-            // required
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            required
           />
           {showPassword ? (
             <IoMdEyeOff style={showStyle} onClick={handleShowPassword} />

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import AddTodo from "../components/AddTodo";
 import { MdAddCircle } from "react-icons/md";
 import AuthContext from "../context/AuthContext";
+import EditTodo from "../components/EditTodo";
 
 const Container = styled.div`
   background-color: white;
@@ -14,7 +15,8 @@ const Container = styled.div`
   height: 95vh;
   border-radius: 5px;
   position: relative;
-  /* overflow-y: scroll; */
+
+  overflow-x: hidden;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -27,6 +29,8 @@ const Wrapper = styled.div`
 const ListContainer = styled.div`
   width: 90vw;
   height: 83vh;
+  overflow-y: scroll;
+
   @media (min-width: 55rem) {
     width: 60vw;
   }
@@ -48,15 +52,19 @@ const Body = styled.div`
   }
 `;
 const AddContainer = styled.div`
+  position: sticky;
+  top: 0;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 2;
 `;
 const AddButton = styled.button`
-  position: absolute;
-  bottom: 10px;
+  position: fixed;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
   border: none;
@@ -68,28 +76,45 @@ const AddButton = styled.button`
     transform: translateX(-28%);
   }
 `;
-const Title = styled.p`
-  font-size: 12px;
+const NoTask = styled.div`
+  padding: 20px 50px;
+  display: flex;
+  align-items: center;
+`;
+const Title = styled.h2`
+  font-size: 18px;
+  font-weight: 500;
+`;
+const AddMessage = styled.a`
+  margin-left: 15px;
+  color: #16325c;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Todo = () => {
   const [todo, setTodo] = useState([]);
-  const [id, setId] = useState(0);
   const [details, setDetails] = useState([]);
   const [getAuthTokens, setGetAuthTokens] = useState(null);
 
   const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
-  const url = "http://localhost:8000/api/";
-  const { authTokens } = useContext(AuthContext);
-  
+  // const url = "http://localhost:8000/api/";
+
+  const { url, authTokens } = useContext(AuthContext);
+
   useEffect(() => {
     const getData = async () => {
       setGetAuthTokens(authTokens);
       const serverData = await fetchData();
       setTodo(serverData);
       console.log(todo);
-      console.log(details);
     };
     getData();
   }, []);
@@ -108,10 +133,10 @@ const Todo = () => {
 
   const fetchDataItem = async (id) => {
     const res = await fetch(url + `detail/${id}/`, {
-      headers:{
+      headers: {
         "Content-type": "application/json",
         Authorization: "Bearer " + authTokens.access,
-      }
+      },
     });
     const data = await res.json();
 
@@ -161,11 +186,11 @@ const Todo = () => {
 
   const handleDelete = async (id) => {
     console.log("deleted", id);
-    const index = todo.findIndex((t, i)=>{
-      return t.id === id
-    })
+    const index = todo.findIndex((t, i) => {
+      return t.id === id;
+    });
     console.log(index);
-        await fetch(`http://localhost:8000/api/delete/${id}/`, {
+    await fetch(url + `delete/${id}/`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -183,7 +208,7 @@ const Todo = () => {
 
     const res = await fetch(url + `update/${id}/`, {
       method: "POST",
-      headers:{
+      headers: {
         "Content-type": "application/json",
         Authorization: "Bearer " + authTokens.access,
       },
@@ -199,7 +224,33 @@ const Todo = () => {
     );
   };
 
-  let { name } = useContext(AuthContext);
+  const toggleEdit = () => {
+    setShowEdit(!showEdit);
+  };
+
+  const handleEdit = async (item) => {
+    console.log("Edited", item.id);
+    const todoToggle = await fetchDataItem(item.id);
+    const updatedTodo = { ...todoToggle, ...item };
+    const logged = JSON.stringify(item);
+
+    const res = await fetch(url + `update/${item.id}/`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + authTokens.access,
+      },
+      body: JSON.stringify(updatedTodo),
+    });
+
+    const data = await res.json();
+
+    setTodo(
+      todo.map((todo) => (todo.id === item.id ? { ...todo, data } : todo))
+    );
+    handleDetails(item.id);
+    setShowEdit(false);
+  };
 
   return (
     <Container>
@@ -210,6 +261,11 @@ const Todo = () => {
             {showAdd && (
               <AddContainer>
                 <AddTodo onAdd={handleAdd} />
+              </AddContainer>
+            )}
+            {showEdit && (
+              <AddContainer>
+                <EditTodo onEdit={handleEdit} details={details} />
               </AddContainer>
             )}
             {todo.length > 0 ? (
@@ -223,7 +279,16 @@ const Todo = () => {
                 />
               ))
             ) : (
-              <Title style={{marginRight: "12px"}}>No Tasks to show</Title>
+              <NoTask>
+                <Title>No Tasks to show.</Title>
+                <AddMessage
+                  onClick={() => {
+                    setShowAdd(!showAdd);
+                  }}
+                >
+                  Add Task
+                </AddMessage>
+              </NoTask>
             )}
             <AddButton>
               <MdAddCircle
@@ -234,8 +299,9 @@ const Todo = () => {
               />
             </AddButton>
           </ListContainer>
+
           <DetContainer>
-            <Details details={details} />
+            <Details details={details} toggleEdit={toggleEdit} />
           </DetContainer>
         </Body>
       </Wrapper>
