@@ -36,7 +36,7 @@ def task_create(request):
 def task_list(request):
     user = request.user or None
     if user in User.objects.all():
-        queryset = user.task_set.all().order_by('-id')
+        queryset = user.task_set.all().order_by('-updated')
         serializer = TaskSerializer(queryset, many=True)
         return Response(serializer.data)
     elif user==None:
