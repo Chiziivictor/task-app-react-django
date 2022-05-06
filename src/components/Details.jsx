@@ -76,7 +76,7 @@ const Details = ({ details, toggleEdit, toggleDetails, todoLength }) => {
 
   return (
     <Container>
-      {Object.keys(itemDetails).length === 0 ? (
+      {Object.keys(details).length === 0 ? (
         <Description>Select an item to show details</Description>
       ) : (
         <>
@@ -84,20 +84,20 @@ const Details = ({ details, toggleEdit, toggleDetails, todoLength }) => {
             <IoMdClose />
           </Close>
           <Title>
-            {itemDetails.title}
+            {details.title}
             <EditButton>
               <FiEdit onClick={toggleEdit} />
             </EditButton>
           </Title>
           <Wrapper style={{ margin: "35px 0" }}>
             <Heading>Description</Heading>
-            <Description>{itemDetails.description}</Description>
+            <Description>{details.description}</Description>
             <DateHead>Created at:</DateHead>
             <DateDesc>{time}</DateDesc>
           </Wrapper>
           <Wrapper>
             <Heading>Status</Heading>
-            {itemDetails.completed ? (
+            {details.completed ? (
               <Description>Completed</Description>
             ) : (
               <Description>Not Completed</Description>
