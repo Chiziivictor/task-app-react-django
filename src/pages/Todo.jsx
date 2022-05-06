@@ -237,6 +237,7 @@ const Todo = () => {
     setTodo(todo.filter((todo) => todo.id !== id));
 
     setTodoLength(Object.keys(todo).length);
+    setShowDetails(false);
     console.log(todo);
   };
 
@@ -299,7 +300,7 @@ const Todo = () => {
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
-    Object.keys(details).length > 0 && setShowDetails(true);
+    // Object.keys(details).length > 0 && setShowDetails(true);
   };
 
   return (
