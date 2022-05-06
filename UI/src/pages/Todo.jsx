@@ -36,10 +36,16 @@ const ListContainer = styled.div`
   }
 `;
 const DetContainer = styled.div`
-  display: none;
+  display: block;
+  position: absolute;
+  top: 80px;
+  background: white;
+  width: 100%;
   /* box-shadow: -5px 1px 10px -10px; */
 
   @media (min-width: 55rem) {
+    position: relative;
+    top: 0;
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     width: 30vw;
     display: block;
@@ -96,6 +102,27 @@ const AddMessage = styled.a`
     text-decoration: underline;
   }
 `;
+const NoDetContainer = styled.div`
+  display: none;
+
+  @media (min-width: 55rem) {
+    display: block;
+    position: relative;
+    top: 0;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    width: 30vw;
+    display: block;
+  }
+`;
+const NoDetails = styled.div`
+  position: relative;
+  padding: 10px 40px;
+  margin-top: 5%;
+`;
+const NoDetailsDesc = styled.p`
+  font-weight: 300;
+  font-size: 14px;
+`;
 
 const Todo = () => {
   const [todo, setTodo] = useState([]);
@@ -104,7 +131,10 @@ const Todo = () => {
 
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
+  const [todoLength, setTodoLength] = useState(Object.keys(todo).length);
+  console.log(todoLength);
   // const url = "http://localhost:8000/api/";
 
   const { url, authTokens } = useContext(AuthContext);
@@ -117,7 +147,7 @@ const Todo = () => {
       console.log(todo);
     };
     getData();
-  }, []);
+  }, [showAdd, showEdit]);
 
   const fetchData = async () => {
     const res = await fetch(url + "list/", {
@@ -144,6 +174,12 @@ const Todo = () => {
     return data;
   };
 
+  const toggleAdd = () => {
+    showEdit && setShowEdit(false);
+    setShowAdd(!showAdd);
+    showDetails && setShowDetails(false);
+  };
+
   const handleAdd = async (item) => {
     console.log("Added Task");
 
@@ -158,6 +194,7 @@ const Todo = () => {
 
     const data = await res.json();
     setTodo([...todo, data]);
+    setTodoLength(Object.keys(todo).length);
     setShowAdd(false);
 
     // const id = Math.floor(Math.random() * 10000) + 1;
@@ -198,6 +235,8 @@ const Todo = () => {
       },
     });
     setTodo(todo.filter((todo) => todo.id !== id));
+
+    setTodoLength(Object.keys(todo).length);
     console.log(todo);
   };
 
@@ -222,10 +261,14 @@ const Todo = () => {
         todo.id === id ? { ...todo, completed: data.completed } : todo
       )
     );
+
+    setTodoLength(Object.keys(todo).length);
   };
 
   const toggleEdit = () => {
     setShowEdit(!showEdit);
+
+    showAdd && setShowAdd(false);
   };
 
   const handleEdit = async (item) => {
@@ -248,8 +291,15 @@ const Todo = () => {
     setTodo(
       todo.map((todo) => (todo.id === item.id ? { ...todo, data } : todo))
     );
+
+    setTodoLength(Object.keys(todo).length);
     handleDetails(item.id);
     setShowEdit(false);
+  };
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails);
+    Object.keys(details).length > 0 && setShowDetails(true);
   };
 
   return (
@@ -276,6 +326,7 @@ const Todo = () => {
                   onSelect={handleDetails}
                   onDelete={handleDelete}
                   onComplete={handleComplete}
+                  toggleDetails={toggleDetails}
                 />
               ))
             ) : (
@@ -292,17 +343,28 @@ const Todo = () => {
             )}
             <AddButton>
               <MdAddCircle
-                onClick={() => {
-                  setShowAdd(!showAdd);
-                }}
+                onClick={toggleAdd}
                 style={{ fontSize: "50px", color: "#16325c" }}
               />
             </AddButton>
           </ListContainer>
 
-          <DetContainer>
-            <Details details={details} toggleEdit={toggleEdit} />
-          </DetContainer>
+          {showDetails ? (
+            <DetContainer>
+              <Details
+                details={details}
+                toggleEdit={toggleEdit}
+                toggleDetails={toggleDetails}
+                todoLength={todoLength}
+              />
+            </DetContainer>
+          ) : (
+            <NoDetContainer>
+              <NoDetails>
+                <NoDetailsDesc>Select an item to show details</NoDetailsDesc>
+              </NoDetails>
+            </NoDetContainer>
+          )}
         </Body>
       </Wrapper>
     </Container>

@@ -11,7 +11,8 @@ const PrivateRoute = ({ ...children }) => {
   return authTokens ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" replace state={{ from: location }} />
+    <Navigate to="/login" />
+    // <Navigate to="/login" replace state={{ from: location }} />
   );
 };
 

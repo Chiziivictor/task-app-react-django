@@ -13,7 +13,7 @@ const fadeIn = keyframes`
 `;
 const Container = styled.div`
   height: 50px;
-  padding: 0 5% 0 5%;
+  padding: 0 5%;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -26,9 +26,12 @@ const ListItem = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 80%;
 `;
 const Title = styled.p`
+  cursor: pointer;
   font-size: 12px;
+  width: 100%;
 `;
 const Date = styled.p`
   font-size: 12px;
@@ -37,7 +40,6 @@ const Date = styled.p`
 const DateContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 16px;
 `;
 const Button = styled.button`
   background: none;
@@ -49,13 +51,13 @@ const Button = styled.button`
     transform: scale(120%);
   }
 `;
-const DetailsContainer = styled.div`
+const DeleteContainer = styled.div`
   display: flex;
   align-items: center;
   animation: ${fadeIn} 0.3s ease-in;
 `;
 
-const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
+const TodoList = ({ item, onSelect, onComplete, onDelete, toggleDetails }) => {
   const [hover, setHover] = useState(false);
 
   const handleHover = () => {
@@ -64,6 +66,11 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
 
   const handleOut = () => {
     setHover(false);
+  };
+
+  const handleDetails = () => {
+    onSelect(item.id);
+    toggleDetails();
   };
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -92,28 +99,28 @@ const TodoList = ({ item, onSelect, onComplete, onDelete }) => {
             <BsSquare style={{ fontSize: "18px" }} />
           )}
         </Button>
-        <Title style={{ opacity: item.completed && "0.5" }}>{item.title}</Title>
+        <Title
+          style={{ opacity: item.completed && "0.5" }}
+          onClick={handleDetails}
+        >
+          {item.title}
+        </Title>
       </ListItem>
-      {!hover && (
-        <DateContainer>
-          <Date style={{ opacity: "0.6" }}>
-            {dayIndex == today ? "Today" : day + " " + date}
-            {/* {day} */}
-          </Date>
-        </DateContainer>
-      )}
-      {hover && (
-        <DetailsContainer>
-          <Button onClick={() => onSelect(item.id)}>
-            <MdInfoOutline style={{ fontSize: "18px", marginRight: "2px" }} />
-          </Button>
-          <Button onClick={() => onDelete(item.id)}>
-            <MdOutlineDelete
-              style={{ fontSize: "18px", color: "hsl(0, 100%, 30%)" }}
-            />
-          </Button>
-        </DetailsContainer>
-      )}
+      <DateContainer>
+        <Date style={{ opacity: "0.6" }}>
+          {dayIndex == today ? "Today" : day + " " + date}
+          {/* {day} */}
+        </Date>
+        <Button onClick={() => onDelete(item.id)}>
+          <MdOutlineDelete
+            style={{
+              fontSize: "18px",
+              color: "hsl(0, 100%, 30%)",
+              marginLeft: "10px",
+            }}
+          />
+        </Button>
+      </DateContainer>
     </Container>
   );
 };

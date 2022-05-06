@@ -17,6 +17,10 @@ const Title = styled.h1`
   margin: 0;
   font-size: 25px;
   font-weight: 500;
+
+  @media (max-width: 400px) {
+    font-size: 20px;
+  }
 `;
 const Line = styled.div`
   background-color: #16325c;
@@ -31,6 +35,10 @@ const User = styled.p`
   font-size: 14px;
   font-weight: 500;
   margin-right: 10vw;
+
+  @media (max-width: 400px) {
+    font-size: 12px;
+  }
 `;
 const Span = styled.span`
   display: flex;

@@ -70,6 +70,7 @@ const AddTodo = ({ onAdd }) => {
           placeholder="Add Todo"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
         <Label htmlFor="">Date</Label>
         <Input
@@ -77,6 +78,7 @@ const AddTodo = ({ onAdd }) => {
           placeholder="Add Date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          required
         />
         <Button type="submit" value="Add" />
         {/* <button onClick={handleClick}>Add</button> */}

@@ -20,7 +20,7 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 10px rgba(161, 134, 127, 0.1);
+  box-shadow: inset 0 0 50px rgba(161, 134, 127, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
