@@ -26,12 +26,7 @@ const ListItem = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 80%;
-
-
- @media (max-width: 400px) {
-    width: 70%;
-  }
+  width: 70%;
 `;
 const Title = styled.p`
   cursor: pointer;
