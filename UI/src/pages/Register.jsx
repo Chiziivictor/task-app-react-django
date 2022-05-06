@@ -4,6 +4,7 @@ import image from "../assets/Bgimg.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 import AuthContext from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -42,17 +43,29 @@ const Input = styled.input`
 `;
 const Message = styled.span`
   font-size: 12px;
-  margin: 20px 0;
+  margin: 10px 0 5px;
 `;
 const Button = styled.button`
   border: none;
   border-radius: 5px;
   padding: 15px 20px;
-  margin-top: 10vh;
+  margin-top: 6vh;
   background-color: #16325c;
   color: white;
   cursor: pointer;
 `;
+const SignUp = styled.div`
+  color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  margin-top: 30px;
+  display: grid;
+`;
+const registerLink = {
+  fontSize: "12px",
+  textDecoration: "underline",
+  color: "inherit",
+  cursor: "pointer",
+};
 const showStyle = {
   position: "absolute",
   top: "142px",
@@ -77,6 +90,7 @@ const Register = () => {
   const [showPassword2, setShowPassword2] = useState();
 
   const { registerUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -85,11 +99,18 @@ const Register = () => {
     setShowPassword2(!showPassword2);
   };
 
+  const handleSubmit = async (e) => {
+    console.log(e);
+    await registerUser(e);
+
+    navigate("/login");
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>SIGN UP</Title>
-        <Form onSubmit={registerUser}>
+        <Form onSubmit={handleSubmit}>
           <Input
             name="email"
             placeholder="Email"
@@ -104,6 +125,7 @@ const Register = () => {
             type="text"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
+            required
           />
           <Input
             name="password"
@@ -114,9 +136,9 @@ const Register = () => {
             required
           />
           <Input
-            name="password"
+            name="password2"
             placeholder="Confirm Password"
-            type={showPassword ? "text" : "password"}
+            type={showPassword2 ? "text" : "password"}
             onChange={(e) => setPassword2(e.target.value)}
             value={password2}
             required
@@ -133,6 +155,12 @@ const Register = () => {
           )}
           {/* <Message>Use a password you can easily remember</Message> */}
           <Button>SIGN UP</Button>
+          <SignUp>
+            <Message>Already registered?</Message>
+            <Link to="/login" style={registerLink}>
+              Sign up
+            </Link>
+          </SignUp>
         </Form>
       </Wrapper>
     </Container>

@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from "react";
 // import { data } from "../data";
 
 const Container = styled.div`
+  position: relative;
   padding: 10px 40px;
   margin-top: 5%;
 `;
@@ -13,6 +16,7 @@ const Title = styled.h1`
   letter-spacing: 1px;
   display: flex;
   align-items: center;
+  margin-right: 30px;
 `;
 const Heading = styled.h2`
   font-size: 14px;
@@ -44,35 +48,56 @@ const EditButton = styled.span`
     transform: scale(120%);
   }
 `;
+const Close = styled.h2`
+  position: absolute;
+  width: 25px;
+  top: 20px;
+  right: 40px;
+  margin: 0;
+  cursor: pointer;
 
-const Details = ({ details, toggleEdit }) => {
+  @media (min-width: 55rem) {
+    display: none;
+  }
+`;
+
+const Details = ({ details, toggleEdit, toggleDetails, todoLength }) => {
+  const [itemDetails, setItemDetails] = useState(details);
+
   let created = new window.Date(details.created);
-  // let created = detailsCreated.getDay()
-
-  // let date = created.toDateString();
   let time = created.toLocaleString();
+
+  console.log("Details updated");
+  console.log(itemDetails);
+
+  useEffect(() => {
+    setItemDetails(details);
+  }, [todoLength]);
 
   return (
     <Container>
-      {details.length === 0 ? (
+      {Object.keys(itemDetails).length === 0 ? (
         <Description>Select an item to show details</Description>
       ) : (
         <>
+          <Close onClick={toggleDetails}>
+            <IoMdClose />
+          </Close>
           <Title>
-            {details.title}
+            {itemDetails.title}
             <EditButton>
               <FiEdit onClick={toggleEdit} />
             </EditButton>
           </Title>
           <Wrapper style={{ margin: "35px 0" }}>
             <Heading>Description</Heading>
-            <Description>{details.description}</Description>
+            <Description>{itemDetails.description}</Description>
             <DateHead>Created at:</DateHead>
             <DateDesc>{time}</DateDesc>
           </Wrapper>
           <Wrapper>
             <Heading>Status</Heading>
-            {details.completed ? (
+            {itemDetails.completed ? (
               <Description>Completed</Description>
             ) : (
               <Description>Not Completed</Description>

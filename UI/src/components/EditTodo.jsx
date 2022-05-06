@@ -59,12 +59,13 @@ const Label = styled.div`
 
 const EditTodo = ({ onEdit, details }) => {
   const [title, setTitle] = useState(details.title);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(details.date);
   const [description, setDescription] = useState(details.description);
   const id = details.id;
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(details.date);
 
     onEdit({ title, date, description, id });
   };

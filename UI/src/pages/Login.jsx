@@ -4,6 +4,7 @@ import styled from "styled-components";
 import image from "../assets/Bgimg.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +18,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 const Wrapper = styled.div`
-  margin-top: 20vh;
+  /* margin-top: 20vh; */
   padding: 20px;
   width: clamp(250px, 50vw, 350px);
 `;
@@ -61,15 +62,16 @@ const Message = styled.p`
   font-size: 12px;
   margin: 3px;
 `;
-const Link = styled.a`
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
 const PasswordContainer = styled.div`
   min-width: 30%;
   position: relative;
 `;
+const registerLink = {
+  fontSize: "12px",
+  textDecoration: "underline",
+  color: "inherit",
+  cursor: "pointer",
+};
 const showStyle = {
   position: "absolute",
   top: "75px",
@@ -85,8 +87,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  let { loginUser, authTokens } = useContext(AuthContext);
-  console.log(authTokens);
+  let { loginUser } = useContext(AuthContext);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -94,10 +95,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     await loginUser(e);
+    navigate("/");
 
-    if (location.state?.from) {
-      navigate(location.state.from);
-    }
+    // if (location.state?.from) {
+    //   navigate(location.state.from);
+    // } else {
+    //   navigate("/");
+    // }
   };
 
   return (
@@ -129,7 +133,9 @@ const Login = () => {
           <Button type="submit">LOGIN</Button>
           <SignUp>
             <Message>Don't have an account?</Message>
-            <Link>Sign up</Link>
+            <Link to="/register" style={registerLink}>
+              Sign up
+            </Link>
           </SignUp>
         </Form>
       </Wrapper>

@@ -6,7 +6,8 @@ const AuthContext = createContext({});
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  const url = "https://4c39-41-242-139-15.eu.ngrok.io/api/";
+  const url = "https://6ed4-154-160-21-121.eu.ngrok.io/api/";
+  // const url = "http://127.0.0.1:8000/api/";
   const [authTokens, setAuthTokens] = useState(
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens"))
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
         password2: e.target.password2.value,
       }),
     });
-    console.log(res);
+    console.log(res.json());
     // console.log();
   };
 
