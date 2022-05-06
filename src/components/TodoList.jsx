@@ -30,7 +30,7 @@ const ListItem = styled.div`
 
 
  @media (max-width: 400px) {
-    width: 50%;
+    width: 70%;
   }
 `;
 const Title = styled.p`
