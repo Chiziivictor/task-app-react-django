@@ -158,7 +158,7 @@ const Register = () => {
           <SignUp>
             <Message>Already registered?</Message>
             <Link to="/login" style={registerLink}>
-              Sign up
+              Sign in
             </Link>
           </SignUp>
         </Form>
