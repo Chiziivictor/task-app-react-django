@@ -70,9 +70,9 @@ const Details = ({ details, toggleEdit, toggleDetails, todoLength }) => {
   console.log("Details updated");
   console.log(itemDetails);
 
-  useEffect(() => {
-    setItemDetails(details);
-  }, [todoLength]);
+  // useEffect(() => {
+  //  setItemDetails(details);
+  // }, [todoLength]);
 
   return (
     <Container>
