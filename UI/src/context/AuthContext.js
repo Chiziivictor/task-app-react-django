@@ -6,7 +6,7 @@ const AuthContext = createContext({});
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  const url = "https://6ed4-154-160-21-121.eu.ngrok.io/api/";
+  const url = "https://veekthorcodes.pythonanywhere.com/api/";
   // const url = "http://127.0.0.1:8000/api/";
   const [authTokens, setAuthTokens] = useState(
     localStorage.getItem("authTokens")
