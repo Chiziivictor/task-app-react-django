@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import styled from "styled-components";
 import image from "../assets/Bgimg.png";
@@ -61,6 +61,8 @@ const SignUp = styled.div`
 const Message = styled.p`
   font-size: 12px;
   margin: 3px;
+  display: grid;
+  place-items: center;
 `;
 const PasswordContainer = styled.div`
   min-width: 30%;
@@ -85,9 +87,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  let { loginUser } = useContext(AuthContext);
+  let { loginUser, errorMessage, authTokens } = useContext(AuthContext);
+
+  useEffect(() => {
+    authTokens && navigate("/");
+  }, [errorMessage, authTokens]);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -95,8 +100,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     await loginUser(e);
-    navigate("/");
-
+    // authTokens && navigate("/");
     // if (location.state?.from) {
     //   navigate(location.state.from);
     // } else {
@@ -108,6 +112,7 @@ const Login = () => {
     <Container>
       <Wrapper>
         <Title>SIGN IN </Title>
+
         <Form onSubmit={handleSubmit}>
           <Input
             name="username"
@@ -125,6 +130,11 @@ const Login = () => {
             value={password}
             required
           />
+          {errorMessage && (
+            <Message style={{ color: "rgba(255,255,200,0.5)" }}>
+              username or password is incorrect
+            </Message>
+          )}
           {showPassword ? (
             <IoMdEyeOff style={showStyle} onClick={handleShowPassword} />
           ) : (

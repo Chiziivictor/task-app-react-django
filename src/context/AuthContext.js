@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 const AuthContext = createContext({});
 
@@ -18,48 +19,46 @@ export const AuthProvider = ({ children }) => {
       ? jwt_decode(localStorage.getItem("authTokens")).username
       : null
   );
+  const [errors, setErrors] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [registered, setRegistered] = useState(false);
 
   const registerUser = async (e) => {
     e.preventDefault();
     console.log("Register form submitted");
 
-    const res = await fetch(url + "accounts/register/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    axios
+      .post(url + "accounts/register/", {
         username: e.target.username.value,
         email: e.target.email.value,
         password: e.target.password.value,
         password2: e.target.password2.value,
-      }),
-    });
-    console.log(res.json());
-    // console.log();
+      })
+      .then((res) => {
+        res.status === 200 && setRegistered(true);
+      })
+      .catch((err) => {
+        setErrors(err.response.data);
+      });
   };
 
   const loginUser = async (e) => {
     e.preventDefault();
     console.log("Login Form Submitted");
-    const res = await fetch(url + "login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    axios
+      .post(url + "login/", {
         username: e.target.username.value,
         password: e.target.password.value,
-      }),
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setAuthTokens(data);
-      setUser(jwt_decode(data.access).username);
-      localStorage.setItem("authTokens", JSON.stringify(data));
-    } else {
-      alert("Something went wrong");
-    }
+      })
+      .then((res) => {
+        setAuthTokens(res.data);
+        setUser(jwt_decode(res.data.access).username);
+        localStorage.setItem("authTokens", JSON.stringify(res.data));
+      })
+      .catch((err) => {
+        setErrorMessage(true);
+      });
   };
 
   const handleLogout = () => {
@@ -70,6 +69,9 @@ export const AuthProvider = ({ children }) => {
     url: url,
     user: user,
     authTokens: authTokens,
+    errors: errors,
+    errorMessage: errorMessage,
+    registered: registered,
     loginUser: loginUser,
     handleLogout: handleLogout,
     registerUser: registerUser,

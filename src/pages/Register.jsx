@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import image from "../assets/Bgimg.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
@@ -44,6 +44,8 @@ const Input = styled.input`
 const Message = styled.span`
   font-size: 12px;
   margin: 10px 0 5px;
+  display: grid;
+  place-items: center;
 `;
 const Button = styled.button`
   border: none;
@@ -89,8 +91,12 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState();
   const [showPassword2, setShowPassword2] = useState();
 
-  const { registerUser } = useContext(AuthContext);
+  const { registerUser, errors, registered } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    registered && navigate("/login");
+  }, [errors, registered]);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -100,16 +106,19 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(e);
     await registerUser(e);
-
-    navigate("/login");
+    // navigate("/register");
   };
-
   return (
     <Container>
       <Wrapper>
         <Title>SIGN UP</Title>
+        {errors && (
+          <Message style={{ color: "red" }}>
+            {" "}
+            {errors[Object.keys(errors)[0]]}{" "}
+          </Message>
+        )}
         <Form onSubmit={handleSubmit}>
           <Input
             name="email"
@@ -153,7 +162,6 @@ const Register = () => {
           ) : (
             <IoMdEye style={showStyle2} onClick={handleShowPassword2} />
           )}
-          {/* <Message>Use a password you can easily remember</Message> */}
           <Button>SIGN UP</Button>
           <SignUp>
             <Message>Already registered?</Message>
@@ -168,3 +176,78 @@ const Register = () => {
 };
 
 export default Register;
+
+// {!errors ? (
+//   <Title>
+//     <Message style={{ margin: "0" }}>Registration Successful.</Message>
+//     <Button style={{ margin: "16px 0 0" }}>
+//       <Link
+//         to="/login"
+//         style={{ ...registerLink, textDecoration: "none" }}
+//       >
+//         Log In
+//       </Link>{" "}
+//     </Button>
+//   </Title>
+// ) : (
+//   <>
+//     {" "}
+//     <Title>SIGN UP</Title>
+//     {errors && (
+//       <Message style={{ color: "red" }}>
+//         {errors[Object.keys(errors)[0]]}
+//       </Message>
+//     )}
+//     <Form onSubmit={handleSubmit}>
+//       <Input
+//         name="email"
+//         placeholder="Email"
+//         type="text"
+//         onChange={(e) => setEmail(e.target.value)}
+//         value={email}
+//         required
+//       />
+//       <Input
+//         name="username"
+//         placeholder="Username"
+//         type="text"
+//         onChange={(e) => setUsername(e.target.value)}
+//         value={username}
+//         required
+//       />
+//       <Input
+//         name="password"
+//         placeholder="Password"
+//         type={showPassword ? "text" : "password"}
+//         onChange={(e) => setPassword(e.target.value)}
+//         value={password}
+//         required
+//       />
+//       <Input
+//         name="password2"
+//         placeholder="Confirm Password"
+//         type={showPassword2 ? "text" : "password"}
+//         onChange={(e) => setPassword2(e.target.value)}
+//         value={password2}
+//         required
+//       />
+//       {showPassword ? (
+//         <IoMdEyeOff style={showStyle} onClick={handleShowPassword} />
+//       ) : (
+//         <IoMdEye style={showStyle} onClick={handleShowPassword} />
+//       )}
+//       {showPassword2 ? (
+//         <IoMdEyeOff style={showStyle2} onClick={handleShowPassword2} />
+//       ) : (
+//         <IoMdEye style={showStyle2} onClick={handleShowPassword2} />
+//       )}
+//       <Button>SIGN UP</Button>
+//       <SignUp>
+//         <Message>Already registered?</Message>
+//         <Link to="/login" style={registerLink}>
+//           Sign in
+//         </Link>
+//       </SignUp>
+//     </Form>{" "}
+//   </>
+// )}

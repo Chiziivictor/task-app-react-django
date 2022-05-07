@@ -16,28 +16,47 @@ const Title = styled.h1`
   letter-spacing: 1px;
   display: flex;
   align-items: center;
-  margin-right: 30px;
+
+  @media (max-width: 400px) {
+    font-size: 16px;
+  }
 `;
 const Heading = styled.h2`
   font-size: 14px;
   font-weight: 600;
+
+  @media (max-width: 400px) {
+    font-size: 12px;
+  }
 `;
 const Wrapper = styled.div``;
 const Description = styled.p`
   font-weight: 300;
   font-size: 14px;
+
+  @media (max-width: 400px) {
+    font-size: 12px;
+  }
 `;
 const DateHead = styled.h3`
   font-size: 11px;
   font-weight: 400;
   opacity: 0.5;
+
+  @media (max-width: 400px) {
+    font-size: 10px;
+  }
 `;
 const DateDesc = styled.p`
   font-size: 10px;
   opacity: 0.5;
+
+  @media (max-width: 400px) {
+    font-size: 9px;
+  }
 `;
 const EditButton = styled.span`
-  margin-left: 2%;
+  margin-left: 10%;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -51,9 +70,9 @@ const EditButton = styled.span`
 const Close = styled.h2`
   position: absolute;
   width: 25px;
-  top: 20px;
+  top: -35px;
   right: 40px;
-  margin: 0;
+  margin-left: 40px;
   cursor: pointer;
 
   @media (min-width: 55rem) {

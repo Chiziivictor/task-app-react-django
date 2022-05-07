@@ -134,7 +134,7 @@ const Todo = () => {
   const [showDetails, setShowDetails] = useState(false);
 
   const [todoLength, setTodoLength] = useState(Object.keys(todo).length);
-  console.log(todoLength);
+
   // const url = "http://localhost:8000/api/";
 
   const { url, authTokens } = useContext(AuthContext);
@@ -144,7 +144,6 @@ const Todo = () => {
       setGetAuthTokens(authTokens);
       const serverData = await fetchData();
       setTodo(serverData);
-      console.log(todo);
     };
     getData();
   }, [showAdd, showEdit]);
